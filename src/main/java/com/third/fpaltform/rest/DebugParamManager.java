@@ -50,6 +50,27 @@ public class DebugParamManager
 		return result;
 	}
 	
+	/**
+	 * 获取参数
+	 * @param barcode
+	 * @param type
+	 * @return
+	 */
+	@CrossOrigin
+	@RequestMapping(value="/getDebugParam", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
+	public Result getDebugParam(@RequestParam(value = "barcode", required = true) String barcode,
+			@RequestParam(value = "type", required = true) Integer type)
+	{
+		List<HashMap<Object, List<Object>>> debugParams = debugParamService.getDebugParam(barcode, type);
+		
+		Result result = new Result();
+		result.setStatus(Result.STATUS_SUCCESS);
+		result.setCode("");
+		result.setContent(debugParams);
+		result.setInfo("查询参数列表成功");
+		return result;
+	}
+	
 	
 	/**
 	 * 获取参数及曲线图片接口

@@ -1,6 +1,7 @@
 package com.third.fpaltform.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import com.sun.javafx.collections.MappingChange.Map;
 import com.third.fpaltform.entity.DebugParamEntity;
 import com.third.fpaltform.entity.PartEntity;
 import com.third.fpaltform.entity.PartModelEntity;
@@ -100,5 +102,47 @@ public class DebugParamService
 			}
 			
 		};
+	}
+
+	public List<HashMap<Object, List<Object>>> getDebugParam(String barcode, Integer type) 
+	{
+		PartEntity part = partRepository.findPart(barcode, type);
+		
+		if(part == null)
+		{
+			throw new ServiceException("部件型号信息不存在");
+		}
+		
+		HashMap<Object, List<Object>> cityModel = new HashMap<Object, List<Object>>();
+		HashMap<Object, List<Object>> vSpeed = new HashMap<Object, List<Object>>();
+		HashMap<Object, List<Object>> wheelDiameter = new HashMap<Object, List<Object>>();
+		HashMap<Object, List<Object>> move = new HashMap<Object, List<Object>>();
+		
+		List<DebugParamEntity> debugParams = debugParamRepository.findByModelId(part.getUid());
+		
+		List<Object> cityModelList = new ArrayList<Object>();
+		List<Object> vSpeedList = new ArrayList<Object>();
+		List<Object> wheelDiameterList = new ArrayList<Object>();
+		List<Object> moveList = new ArrayList<Object>();
+		
+		for(DebugParamEntity d : debugParams)
+		{
+			cityModelList.add(d.getBikeType());
+			vSpeedList.add(d.getRate());
+			wheelDiameterList.add(d.getRadius());
+			moveList.add(d.getModel());
+		}
+		
+		cityModel.put("bikeType", cityModelList);
+		vSpeed.put("rate", vSpeedList);
+		wheelDiameter.put("radius", wheelDiameterList);
+		move.put("model", moveList);
+		
+		List<HashMap<Object, List<Object>>> result = new ArrayList<HashMap<Object, List<Object>>>();
+		result.add(cityModel);
+		result.add(vSpeed);
+		result.add(wheelDiameter);
+		result.add(move);
+		return result;
 	}
 }
