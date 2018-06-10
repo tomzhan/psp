@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -128,7 +130,7 @@ public class ExcelUtil {
 			break;
 		case HSSFCell.CELL_TYPE_NUMERIC:
 			if (DateUtil.isCellDateFormatted(cell)) {
-				//strCell = DateUtilsl.dateToString(HSSFDateUtil.getJavaDate(cell.getNumericCellValue()),"yyyy-MM-dd HH:mm:ss");
+				strCell = dateToStr(HSSFDateUtil.getJavaDate(cell.getNumericCellValue()));
 			
 			} else {
 	        	cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -152,6 +154,12 @@ public class ExcelUtil {
 			return "";
 		}
 		return strCell;
+	}
+	
+	public static String dateToStr(java.util.Date dateDate) {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = formatter.format(dateDate);
+		return dateString;
 	}
 	
 	/**

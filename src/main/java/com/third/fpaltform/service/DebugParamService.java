@@ -104,7 +104,7 @@ public class DebugParamService
 		};
 	}
 
-	public List<HashMap<Object, List<Object>>> getDebugParam(String barcode, Integer type) 
+	public HashMap<Object, List<Object>> getDebugParam(String barcode, Integer type) 
 	{
 		PartEntity part = partRepository.findPart(barcode, type);
 		
@@ -113,10 +113,7 @@ public class DebugParamService
 			throw new ServiceException("部件型号信息不存在");
 		}
 		
-		HashMap<Object, List<Object>> cityModel = new HashMap<Object, List<Object>>();
-		HashMap<Object, List<Object>> vSpeed = new HashMap<Object, List<Object>>();
-		HashMap<Object, List<Object>> wheelDiameter = new HashMap<Object, List<Object>>();
-		HashMap<Object, List<Object>> move = new HashMap<Object, List<Object>>();
+		HashMap<Object, List<Object>> map = new HashMap<Object, List<Object>>();
 		
 		List<DebugParamEntity> debugParams = debugParamRepository.findByModelId(part.getUid());
 		
@@ -133,16 +130,11 @@ public class DebugParamService
 			moveList.add(d.getModel());
 		}
 		
-		cityModel.put("bikeType", cityModelList);
-		vSpeed.put("rate", vSpeedList);
-		wheelDiameter.put("radius", wheelDiameterList);
-		move.put("model", moveList);
+		map.put("bikeType", cityModelList);
+		map.put("rate", vSpeedList);
+		map.put("radius", wheelDiameterList);
+		map.put("model", moveList);
 		
-		List<HashMap<Object, List<Object>>> result = new ArrayList<HashMap<Object, List<Object>>>();
-		result.add(cityModel);
-		result.add(vSpeed);
-		result.add(wheelDiameter);
-		result.add(move);
-		return result;
+		return map;
 	}
 }

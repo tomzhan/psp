@@ -4,6 +4,7 @@
 package com.third.fpaltform.rest;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -70,19 +71,17 @@ public class DiagnosisManager
 	 */
 	@CrossOrigin
 	@RequestMapping(value="/find/diagnosis", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-	public Result findDiagnosis(@RequestParam(value="vin", required=false) String vin) 
+	public Result findDiagnosis(@RequestParam(value="vin", required=false) String vin,
+			@RequestParam(value="batteryId", required=false) String batteryId,
+			@RequestParam(value="driverId", required=false) String driverId,
+			@RequestParam(value="instrumentId", required=false) String instrumentId) 
 	{
-		if(vin == null)
-		{
-			throw new RestException("500000");
-		}
-		
-		VehicleEntity v = diagnosisService.findDiagnosis(vin);
+		List<VehicleEntity> vehicles = diagnosisService.findDiagnosis(vin, batteryId, driverId, instrumentId);
 		
 		Result result = new Result();
 		result.setStatus(Result.STATUS_SUCCESS);
 		result.setCode("");
-		result.setContent(v);
+		result.setContent(vehicles);
 		result.setInfo("查询当前车辆的检测数据成功");
 		logger.info("查询当前车辆的检测数据成功");
 		return result;
@@ -137,7 +136,32 @@ public class DiagnosisManager
 	public Result vehicleBind(@RequestBody Diagnosis diagnosis) 
 	{
 		diagnosisService.vehicleBind(diagnosis);
-		return null;
+		Result result = new Result();
+		result.setStatus(Result.STATUS_SUCCESS);
+		result.setInfo("车辆绑定成功");
+		logger.info("车辆绑定成功");
+		return result;
+	}
+	
+	/**
+	 * 解除绑定
+	 * @param vin
+	 * @param batteryId
+	 * @return
+	 */
+	@CrossOrigin
+	@RequestMapping(value="/vehicle/unBind", method = RequestMethod.PUT, produces = MediaTypes.JSON_UTF_8)
+	public Result vehicleUnBind(@RequestParam(value="vin", required=true) String vin,
+			@RequestParam(value="barCode", required=true) String barCode,
+			@RequestParam(value="type", required=true) Integer type) 
+	{
+		diagnosisService.vehicleUnBind(vin, barCode, type);
+		
+		Result result = new Result();
+		result.setStatus(Result.STATUS_SUCCESS);
+		result.setInfo("车辆解绑成功");
+		logger.info("车辆解绑成功");
+		return result;
 	}
 
 }

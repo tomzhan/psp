@@ -61,7 +61,7 @@ public class DebugParamManager
 	public Result getDebugParam(@RequestParam(value = "barcode", required = true) String barcode,
 			@RequestParam(value = "type", required = true) Integer type)
 	{
-		List<HashMap<Object, List<Object>>> debugParams = debugParamService.getDebugParam(barcode, type);
+		HashMap<Object, List<Object>> debugParams = debugParamService.getDebugParam(barcode, type);
 		
 		Result result = new Result();
 		result.setStatus(Result.STATUS_SUCCESS);

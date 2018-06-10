@@ -1,15 +1,12 @@
 package com.third.fpaltform.rest;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +15,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.third.fpaltform.common.ExcelHeader;
 import com.third.fpaltform.common.MediaTypes;
-import com.third.fpaltform.common.OperationLog;
-import com.third.fpaltform.entity.Diagnosis;
 import com.third.fpaltform.exception.RestException;
 import com.third.fpaltform.exception.ServiceExceptionHandle;
 import com.third.fpaltform.service.PartService;
@@ -60,18 +55,25 @@ public class PartManager
         	}
         }
         
-        List<Map<String, Object>> list = null;
-        
         try {
-        	list = partService.partImport(file.getInputStream());
+        	partService.partImport(file.getInputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
         
 		result.setStatus(Result.STATUS_SUCCESS);
 		result.setCode("700000");
-		result.setInfo(serviceExceptionHandle.genInfoById("700000"));
+		result.setInfo("部件信息导入成功");
 		return result;
+	}
+	
+	
+	@CrossOrigin
+	@RequestMapping(value="/part/imports", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
+	public Result imports() 
+	{
+		partService.partImport(null);
+		return null;
 	}
 
 }
