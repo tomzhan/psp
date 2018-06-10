@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.third.fpaltform.common.ExcelResources;
 
@@ -82,9 +83,9 @@ public class PartEntity implements Serializable
 	
 	@Column(name = "OUT_DATE")
 	private Date outDate;//出厂日期
-	
+	@Transient
 	private String productTime;//生产日期
-	
+	@Transient
 	private String outTime;//出厂日期
 	
 	@Column(name = "NEW_DATE")
