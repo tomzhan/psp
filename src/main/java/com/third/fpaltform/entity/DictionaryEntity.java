@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "DICTIONARY")
@@ -20,6 +22,7 @@ public class DictionaryEntity implements Serializable
 	private static final long serialVersionUID = -7513895645363975330L;
 	
 	@EmbeddedId
+	@JsonIgnore
 	private DictionaryMultiKeys dictionaryMultiKeys;
 	
 	@Column(name = "NAME")
@@ -34,7 +37,7 @@ public class DictionaryEntity implements Serializable
 	@Transient
 	private Integer id;
 	@Transient
-	private String code;
+	private Integer code;
 	
 
 	public DictionaryMultiKeys getDictionaryMultiKeys() {
@@ -77,11 +80,17 @@ public class DictionaryEntity implements Serializable
 		this.id = id;
 	}
 
-	public String getCode() {
+	/**
+	 * @return the code
+	 */
+	public Integer getCode() {
 		return code;
 	}
 
-	public void setCode(String code) {
+	/**
+	 * @param code the code to set
+	 */
+	public void setCode(Integer code) {
 		this.code = code;
 	}
 }
