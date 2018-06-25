@@ -49,11 +49,8 @@ public class DiagnosisManager
 		logger.info("upload diagnosis param :: " + new Gson().toJson(diagnosis));
 		
 		String vin = diagnosis.getVin() == null ? null : diagnosis.getVin();
-		String batteryDiagnosis = diagnosis.getBatteryDiagnosis() == null ? null : new Gson().toJson(diagnosis.getBatteryDiagnosis());
-		String driveDiagnosis = diagnosis.getDriveDiagnosis() == null ? null : new Gson().toJson(diagnosis.getDriveDiagnosis());
-		String instrumentDiagnosis = diagnosis.getInstrumentDiagnosis() == null ? null : new Gson().toJson(diagnosis.getInstrumentDiagnosis());
 		
-		diagnosisService.saveVehicleDiagnosis(vin, batteryDiagnosis, driveDiagnosis, instrumentDiagnosis);
+		diagnosisService.saveVehicleDiagnosis(vin, diagnosis);
 		
 		Result result = new Result();
 		result.setStatus(Result.STATUS_SUCCESS);
@@ -96,6 +93,10 @@ public class DiagnosisManager
 	@CrossOrigin
 	@RequestMapping(value="/find/history/diagnosis", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
 	public Result findHistoryDiagnosis(@RequestParam(value="vin", required=true) String vin,
+			@RequestParam(value="barcode", required=false) String barcode,
+			@RequestParam(value="batteryId", required=false) String batteryId,
+			@RequestParam(value="driverId", required=false) String driverId,
+			@RequestParam(value="instrumentId", required=false) String instrumentId,
 			@RequestParam(value="pageNumber", required=true) Integer pageNumber, 
 			@RequestParam(value="limit", required=true) Integer limit) 
 	{
@@ -104,7 +105,7 @@ public class DiagnosisManager
 			throw new RestException("500000");
 		}
 		
-		Page<DiagnosisLog> userPage = diagnosisService.findHistoryDiagnosis(vin, pageNumber, limit);
+		Page<DiagnosisLog> userPage = diagnosisService.findHistoryDiagnosis(vin, barcode, batteryId, driverId, instrumentId, pageNumber, limit);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("diagnosisLogs", userPage.getContent());

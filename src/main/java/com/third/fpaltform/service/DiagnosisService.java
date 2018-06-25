@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
@@ -52,10 +53,14 @@ public class DiagnosisService
 	 * @param instrumentDiagnosis
 	 */
 	@Transactional
-	public void saveVehicleDiagnosis(String vin, String batteryDiagnosis, String driveDiagnosis, String instrumentDiagnosis) 
+	public void saveVehicleDiagnosis(String vin, Diagnosis diagnosis) 
 	{
 		
 		VehicleEntity v = vehicleRepository.findByVin(vin);
+		
+		String batteryDiagnosis = diagnosis.getBatteryDiagnosis() == null ? null : new Gson().toJson(diagnosis.getBatteryDiagnosis());
+		String driveDiagnosis = diagnosis.getDriveDiagnosis() == null ? null : new Gson().toJson(diagnosis.getDriveDiagnosis());
+		String instrumentDiagnosis = diagnosis.getInstrumentDiagnosis() == null ? null : new Gson().toJson(diagnosis.getInstrumentDiagnosis());
 		
 		if(v == null)
 		{
@@ -75,14 +80,17 @@ public class DiagnosisService
 		
 		v = vehicleRepository.save(v);//保存车辆数据
 		
-		DiagnosisLog diagnosis = new DiagnosisLog();
-		diagnosis.setBatteryDiagnosis(batteryDiagnosis);
-		diagnosis.setDriveDiagnosis(driveDiagnosis);
-		diagnosis.setInstrumentDiagnosis(instrumentDiagnosis);
-		diagnosis.setVehicle(v);
-		diagnosis.setCreateTime(new Date());
+		DiagnosisLog diagnosisLog = new DiagnosisLog();
+		diagnosisLog.setBatteryDiagnosis(batteryDiagnosis);
+		diagnosisLog.setDriveDiagnosis(driveDiagnosis);
+		diagnosisLog.setInstrumentDiagnosis(instrumentDiagnosis);
+		diagnosisLog.setVehicle(v);
+		diagnosisLog.setBatteryCode(diagnosis.getBatteryDiagnosis() != null  ? diagnosis.getBatteryDiagnosis().getBarcode() : null);
+		diagnosisLog.setDriveCode(diagnosis.getDriveDiagnosis() != null ? diagnosis.getDriveDiagnosis().getBarcode() : null);
+		diagnosisLog.setInstrumentCode(diagnosis.getInstrumentDiagnosis() != null ? diagnosis.getInstrumentDiagnosis().getBarcode() : null);
+		diagnosisLog.setCreateTime(new Date());
 		
-		diagnosisLogRepository.save(diagnosis);
+		diagnosisLogRepository.save(diagnosisLog);
 	}
 	
 	
@@ -128,8 +136,12 @@ public class DiagnosisService
 	/**
 	 * 查询当前车辆的检测数据
 	 * @param vin
+	 * @param instrumentId 
+	 * @param driverId 
+	 * @param batteryId 
+	 * @param barcode 
 	 */
-	public Page<DiagnosisLog> findHistoryDiagnosis(String vin, Integer pageNumber, Integer limit) 
+	public Page<DiagnosisLog> findHistoryDiagnosis(String vin, String barcode, String batteryId, String driverId, String instrumentId, Integer pageNumber, Integer limit) 
 	{
 		VehicleEntity v = vehicleRepository.findByVin(vin);
 		
@@ -138,9 +150,36 @@ public class DiagnosisService
 			throw new ServiceException("500001");
 		}
 		
-		Page<DiagnosisLog> userPage = diagnosisLogRepository.findByVehicleUid(v.getUid(), new PageRequest(pageNumber, limit, new Sort(Direction.DESC, "createTime")));
+		Sort sort = new Sort(Direction.DESC, "createTime");
+		
+		Pageable pageable = new PageRequest(pageNumber, limit, sort);
+		
+		Page<DiagnosisLog> userPage = diagnosisLogRepository.findAll(diagnosisLogSpec(vin, barcode), pageable);
 		
 		return userPage;
+	}
+	
+	
+	private Specification<DiagnosisLog> diagnosisLogSpec(final String vin, final String barcode) 
+	{
+		return new Specification<DiagnosisLog>(){
+
+			@Override
+			public Predicate toPredicate(Root<DiagnosisLog> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				
+				List<Predicate> predicates = new ArrayList<Predicate>(); 
+				if(!"".equals(vin) && null != vin)
+				{
+					predicates.add(cb.like(root.<String>get("vin"), "%"+vin+"%"));
+				}	
+				if(!"".equals(barcode) && null != barcode)
+				{
+					predicates.add(cb.like(root.<String>get("barcode"), "%"+barcode+"%"));
+				}
+				return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+			}
+			
+		};
 	}
 
 	/**

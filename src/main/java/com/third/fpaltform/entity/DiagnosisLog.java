@@ -43,6 +43,15 @@ public class DiagnosisLog implements Serializable
 	@Column(name = "INSTRUMENT_DIAGNOSIS")
 	private String instrumentDiagnosis;//仪表检测
 	
+	@Column(name = "BATTERY_CODE")
+	private String batteryCode;//电池barcode
+	
+	@Column(name = "DRIVE_CODE")
+	private String driveCode;//电驱动
+	
+	@Column(name = "INSTRUMENT_CODE")
+	private String instrumentCode;//仪表barcode
+	
 	@Column(name = "CREATE_TIME")
 	private Date createTime;
 
@@ -93,4 +102,30 @@ public class DiagnosisLog implements Serializable
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
+
+	public String getBatteryCode() {
+		return batteryCode;
+	}
+
+	public void setBatteryCode(String batteryCode) {
+		this.batteryCode = batteryCode;
+	}
+
+	public String getDriveCode() {
+		return driveCode;
+	}
+
+	public void setDriveCode(String driveCode) {
+		this.driveCode = driveCode;
+	}
+
+	public String getInstrumentCode() {
+		return instrumentCode;
+	}
+
+	public void setInstrumentCode(String instrumentCode) {
+		this.instrumentCode = instrumentCode;
+	}
+	
+	
 }
