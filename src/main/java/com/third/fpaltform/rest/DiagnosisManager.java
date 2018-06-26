@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.third.fpaltform.common.MediaTypes;
 import com.third.fpaltform.entity.Diagnosis;
 import com.third.fpaltform.entity.DiagnosisLog;
+import com.third.fpaltform.entity.UnbindParan;
 import com.third.fpaltform.entity.VehicleEntity;
 import com.third.fpaltform.exception.RestException;
 import com.third.fpaltform.service.DiagnosisService;
@@ -68,12 +69,12 @@ public class DiagnosisManager
 	 */
 	@CrossOrigin
 	@RequestMapping(value="/find/diagnosis", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
-	public Result findDiagnosis(@RequestParam(value="vin", required=false) String vin,
+	public Result findDiagnosis(@RequestParam(value="vin", required=true) String vin,
 			@RequestParam(value="batteryId", required=false) String batteryId,
 			@RequestParam(value="driverId", required=false) String driverId,
 			@RequestParam(value="instrumentId", required=false) String instrumentId) 
 	{
-		List<VehicleEntity> vehicles = diagnosisService.findDiagnosis(vin, batteryId, driverId, instrumentId);
+		VehicleEntity vehicles = diagnosisService.findDiagnosis(vin, batteryId, driverId, instrumentId);
 		
 		Result result = new Result();
 		result.setStatus(Result.STATUS_SUCCESS);
@@ -134,9 +135,9 @@ public class DiagnosisManager
 	 */
 	@CrossOrigin
 	@RequestMapping(value="/vehicle/bind", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
-	public Result vehicleBind(@RequestBody Diagnosis diagnosis) 
+	public Result vehicleBind(@RequestBody UnbindParan unbindParan) 
 	{
-		diagnosisService.vehicleBind(diagnosis);
+		diagnosisService.vehicleBind(unbindParan);
 		Result result = new Result();
 		result.setStatus(Result.STATUS_SUCCESS);
 		result.setInfo("车辆绑定成功");
