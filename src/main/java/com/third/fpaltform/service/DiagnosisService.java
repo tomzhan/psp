@@ -200,9 +200,9 @@ public class DiagnosisService
 	public void vehicleBind(UnbindParan unbindParan) 
 	{
 		String vin = unbindParan.getVin() == null ? null : unbindParan.getVin();
-		String battery_id = unbindParan.getCapacity();
-		String driver_id = unbindParan.getCurrent();
-		String ins_id = unbindParan.getShift();
+		String battery_id = unbindParan.getCapacitybarcode();
+		String driver_id = unbindParan.getCurrentbarcode();
+		String ins_id = unbindParan.getShiftbarcode();
 		String sensorId = unbindParan.getSensorId() == null ? null : unbindParan.getSensorId();
 		String motoId = unbindParan.getMotoId() == null ? null : unbindParan.getMotoId();
 		
