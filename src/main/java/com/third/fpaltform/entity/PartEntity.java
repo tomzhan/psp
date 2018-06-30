@@ -43,10 +43,10 @@ public class PartEntity implements Serializable
 	private int modelId;
 	
 	@Column(name = "HVER")
-	private String hver;//硬件版本
+	private Integer hver;//硬件版本
 	
 	@Column(name = "SVER")
-	private String sver;//软件版本
+	private Integer sver;//软件版本
 	
 	@Column(name = "VOLTAGE")
 	private String voltage;//额定工作电压
@@ -117,7 +117,6 @@ public class PartEntity implements Serializable
 	/**
 	 * @return the barCode
 	 */
-	@ExcelResources(order = 1, title = "barCode")
 	public String getBarCode() {
 		return barCode;
 	}
@@ -132,7 +131,6 @@ public class PartEntity implements Serializable
 	/**
 	 * @return the type
 	 */
-	@ExcelResources(order = 2, title = "type")
 	public int getType() {
 		return type;
 	}
@@ -161,37 +159,34 @@ public class PartEntity implements Serializable
 	/**
 	 * @return the hver
 	 */
-	@ExcelResources(order = 3, title = "hver")
-	public String getHver() {
+	public Integer getHver() {
 		return hver;
 	}
 
 	/**
 	 * @param hver the hver to set
 	 */
-	public void setHver(String hver) {
+	public void setHver(Integer hver) {
 		this.hver = hver;
 	}
 
 	/**
 	 * @return the sver
 	 */
-	@ExcelResources(order = 4, title = "sver")
-	public String getSver() {
+	public Integer getSver() {
 		return sver;
 	}
 
 	/**
 	 * @param sver the sver to set
 	 */
-	public void setSver(String sver) {
+	public void setSver(Integer sver) {
 		this.sver = sver;
 	}
 
 	/**
 	 * @return the voltage
 	 */
-	@ExcelResources(order = 5, title = "voltage")
 	public String getVoltage() {
 		return voltage;
 	}
@@ -206,7 +201,6 @@ public class PartEntity implements Serializable
 	/**
 	 * @return the current
 	 */
-	@ExcelResources(order = 6, title = "current")
 	public String getCurrent() {
 		return current;
 	}
@@ -221,7 +215,6 @@ public class PartEntity implements Serializable
 	/**
 	 * @return the voltageProValue
 	 */
-	@ExcelResources(order = 7, title = "voltageProValue")
 	public String getVoltageProValue() {
 		return voltageProValue;
 	}
@@ -236,7 +229,6 @@ public class PartEntity implements Serializable
 	/**
 	 * @return the adaptiveSensor
 	 */
-	@ExcelResources(order = 8, title = "adaptiveSensor")
 	public String getAdaptiveSensor() {
 		return adaptiveSensor;
 	}
@@ -251,7 +243,6 @@ public class PartEntity implements Serializable
 	/**
 	 * @return the highSpeedLimit
 	 */
-	@ExcelResources(order = 9, title = "highSpeedLimit")
 	public String getHighSpeedLimit() {
 		return highSpeedLimit;
 	}
@@ -266,7 +257,6 @@ public class PartEntity implements Serializable
 	/**
 	 * @return the circumference
 	 */
-	@ExcelResources(order = 10, title = "circumference")
 	public String getCircumference() {
 		return circumference;
 	}
@@ -281,7 +271,6 @@ public class PartEntity implements Serializable
 	/**
 	 * @return the gear
 	 */
-	@ExcelResources(order = 11, title = "gear")
 	public String getGear() {
 		return gear;
 	}
@@ -296,7 +285,6 @@ public class PartEntity implements Serializable
 	/**
 	 * @return the soh
 	 */
-	@ExcelResources(order = 12, title = "soh")
 	public String getSoh() {
 		return soh;
 	}
@@ -311,7 +299,6 @@ public class PartEntity implements Serializable
 	/**
 	 * @return the soc
 	 */
-	@ExcelResources(order = 13, title = "soc")
 	public String getSoc() {
 		return soc;
 	}
@@ -326,7 +313,6 @@ public class PartEntity implements Serializable
 	/**
 	 * @return the cycles
 	 */
-	@ExcelResources(order = 14, title = "cycles")
 	public String getCycles() {
 		return cycles;
 	}
@@ -365,11 +351,10 @@ public class PartEntity implements Serializable
 	public void setOutDate(Date outDate) {
 		this.outDate = outDate;
 	}
-	
+
 	/**
 	 * @return the productTime
 	 */
-	@ExcelResources(order = 15, title = "productTime")
 	public String getProductTime() {
 		return productTime;
 	}
@@ -384,7 +369,6 @@ public class PartEntity implements Serializable
 	/**
 	 * @return the outTime
 	 */
-	@ExcelResources(order = 16, title = "outTime")
 	public String getOutTime() {
 		return outTime;
 	}

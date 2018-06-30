@@ -54,7 +54,7 @@ public class PartModelManager
 		}
 		
 		Integer type = (Integer) o1;
-		String modelId = (String) o2;
+		Integer modelId = (Integer) o2;
 		String manufactor = (String) o3;
 		String meno = (String) o4;
 		String name = (String) o5;
@@ -127,24 +127,6 @@ public class PartModelManager
 		return result;
 	}
 	
-	/**
-	 * 删除部件类型信息
-	 * @param input
-	 * @return
-	 */
-	@CrossOrigin
-	@RequestMapping(value="/partModel/{uid}", method = RequestMethod.DELETE, produces = MediaTypes.JSON_UTF_8)
-	public Result deletePartModel(@PathVariable("uid") Integer uid) 
-	{
-		
-		partModelService.deletePartModel(uid);
-		
-		Result result = new Result();
-		result.setStatus(Result.STATUS_SUCCESS);
-		result.setCode("");
-		result.setInfo("删除部件信息成功");
-		return result;
-	}
 	
 	/**
 	 * 查询部件类型信息

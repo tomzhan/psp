@@ -38,7 +38,7 @@ public class PartModelService
 	 * @param manufactor
 	 * @param meno
 	 */
-	public PartModelEntity insertPartModel(Integer type, String modelId, String manufactor, String meno, String name) 
+	public PartModelEntity insertPartModel(Integer type, Integer modelId, String manufactor, String meno, String name) 
 	{
 		PartModelEntity partModel = new PartModelEntity();
 		partModel.setType(type);
@@ -74,7 +74,7 @@ public class PartModelService
 		}
 		
 		partModel.setType(type);
-		partModel.setModelId(modelId);
+//		partModel.setModelId(modelId);
 		partModel.setManufactor(manufactor);
 		partModel.setMeno(meno);
 		partModel.setName(name);
@@ -82,28 +82,6 @@ public class PartModelService
 		partModelRepository.save(partModel);
 	}
 
-	/**
-	 * 删除部件信息
-	 * @param uid
-	 */
-	public void deletePartModel(Integer uid) 
-	{
-		PartModelEntity partModel = partModelRepository.findOne(uid);
-		
-		if(partModel == null)
-		{
-			throw new ServiceException("部件型号信息不存在");
-		}
-		
-		Set<HardwareVersionEntity> hardwareVersions = partModel.getHardwareVersions();
-		
-		if(hardwareVersions != null && hardwareVersions.size() != 0)
-		{
-			throw new ServiceException("部件型号信息有相关联的版本信息,不能删除");
-		}
-		
-		partModelRepository.delete(uid);
-	}
 
 	/**
 	 * 查询部件类型信息

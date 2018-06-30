@@ -44,22 +44,20 @@ public class HardwareVersionService
 	 * @param description 
 	 */
 	@Transactional
-	public void save(String partModelUid, String hver, String sver, String signCode, String fileName, String filePath, String operator, String description) 
+	public void save(Integer partModelUid, Integer hver, Integer sver, String signCode, String fileName, String filePath, String operator, String description) 
 	{
-		PartModelEntity partModel = partModelRepository.findOne(Integer.parseInt(partModelUid));
+		PartModelEntity partModel = partModelRepository.findOne(partModelUid);
 		
 		if(partModel == null)
 		{
 			throw new ServiceException("部件型号信息不存在");
 		}
 		
-		hardwareVersionRepository.updateHardwareVersion(partModel.getUid());
-		
 		HardwareVersionEntity h = new HardwareVersionEntity();
 		h.setFileName(fileName);
 		h.setHver(hver);
 		h.setOperator(operator);
-		h.setPartModel(partModel);
+		h.setModelUid(partModelUid);
 		h.setSignCode(signCode);
 		h.setStatus(HardwareVersionEntity.STATUS_YES);
 		h.setSver(sver);

@@ -8,11 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "HARDWARE_VERSION")
@@ -27,16 +23,14 @@ public class HardwareVersionEntity implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer uid;
 	
-	@ManyToOne
-	@JoinColumn(name="PART_MODEL_UID")
-	@JsonIgnore
-	private PartModelEntity partModel;
+	@Column(name = "MODEL_UID")
+	private Integer modelUid;
 	
 	@Column(name = "HVER")
-	private String hver;//硬件版本
+	private Integer hver;//硬件版本
 	
 	@Column(name = "SVER")
-	private String sver;//软件版本
+	private Integer sver;//软件版本
 	
 	@Column(name = "URL")
 	private String url;
@@ -59,90 +53,156 @@ public class HardwareVersionEntity implements Serializable{
 	@Column(name = "UPLOAD_TIME", nullable = false)
 	private Date uploadTime;
 
+	/**
+	 * @return the uid
+	 */
 	public Integer getUid() {
 		return uid;
 	}
 
+	/**
+	 * @param uid the uid to set
+	 */
 	public void setUid(Integer uid) {
 		this.uid = uid;
 	}
 
-	public PartModelEntity getPartModel() {
-		return partModel;
+	/**
+	 * @return the modelUid
+	 */
+	public Integer getModelUid() {
+		return modelUid;
 	}
 
-	public void setPartModel(PartModelEntity partModel) {
-		this.partModel = partModel;
+	/**
+	 * @param modelUid the modelUid to set
+	 */
+	public void setModelUid(Integer modelUid) {
+		this.modelUid = modelUid;
 	}
 
-	public String getHver() {
+	/**
+	 * @return the hver
+	 */
+	public Integer getHver() {
 		return hver;
 	}
 
-	public void setHver(String hver) {
+	/**
+	 * @param hver the hver to set
+	 */
+	public void setHver(Integer hver) {
 		this.hver = hver;
 	}
 
-	public String getSver() {
+	/**
+	 * @return the sver
+	 */
+	public Integer getSver() {
 		return sver;
 	}
 
-	public void setSver(String sver) {
+	/**
+	 * @param sver the sver to set
+	 */
+	public void setSver(Integer sver) {
 		this.sver = sver;
 	}
 
+	/**
+	 * @return the url
+	 */
 	public String getUrl() {
 		return url;
 	}
 
+	/**
+	 * @param url the url to set
+	 */
 	public void setUrl(String url) {
 		this.url = url;
 	}
 
+	/**
+	 * @return the operator
+	 */
 	public String getOperator() {
 		return operator;
 	}
 
+	/**
+	 * @param operator the operator to set
+	 */
 	public void setOperator(String operator) {
 		this.operator = operator;
 	}
 
+	/**
+	 * @return the status
+	 */
 	public Integer getStatus() {
 		return status;
 	}
 
+	/**
+	 * @param status the status to set
+	 */
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
+	/**
+	 * @return the signCode
+	 */
 	public String getSignCode() {
 		return signCode;
 	}
 
+	/**
+	 * @param signCode the signCode to set
+	 */
 	public void setSignCode(String signCode) {
 		this.signCode = signCode;
 	}
 
+	/**
+	 * @return the fileName
+	 */
 	public String getFileName() {
 		return fileName;
 	}
 
+	/**
+	 * @param fileName the fileName to set
+	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
 
+	/**
+	 * @return the description
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * @param description the description to set
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/**
+	 * @return the uploadTime
+	 */
 	public Date getUploadTime() {
 		return uploadTime;
 	}
 
+	/**
+	 * @param uploadTime the uploadTime to set
+	 */
 	public void setUploadTime(Date uploadTime) {
 		this.uploadTime = uploadTime;
 	}

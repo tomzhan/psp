@@ -44,9 +44,9 @@ public class HardwareVersionManager {
 	@CrossOrigin
 	@RequestMapping(value = "/appVersion/appOperation", method = RequestMethod.POST, produces = MediaTypes.JSON_UTF_8)
 	public Result hardwareVersion(HttpServletRequest request) throws JSchException, SftpException, IOException {
-		String partModelUid = request.getParameter("partModelUid");
-		String hver = request.getParameter("hver");
-		String sver = request.getParameter("sver");
+		Integer partModelUid = Integer.valueOf(request.getParameter("partModelUid"));
+		Integer hver = Integer.valueOf(request.getParameter("hver"));
+		Integer sver = Integer.valueOf(request.getParameter("sver"));
 		String signCode = request.getParameter("signCode");
 		String fileName = request.getParameter("fileName");
 		String description = request.getParameter("description");
