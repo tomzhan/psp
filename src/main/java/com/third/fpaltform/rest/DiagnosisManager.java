@@ -165,5 +165,28 @@ public class DiagnosisManager
 		logger.info("车辆解绑成功");
 		return result;
 	}
+	
+	/**
+	 * 查询电池状态
+	 * @param eId
+	 * @param lic
+	 * @return
+	 */
+	@CrossOrigin
+	@RequestMapping(value="/batteryState", method = RequestMethod.GET, produces = MediaTypes.JSON_UTF_8)
+	public Result queryBatteryState(@RequestParam(value="eId", required=false) String eId,
+			@RequestParam(value="lic", required=false) String lic) 
+	{
+		
+		List<Map<String, Object>> list = diagnosisService.queryBatteryState(eId, lic);
+		
+		Result result = new Result();
+		result.setStatus(Result.STATUS_SUCCESS);
+		result.setCode("");
+		result.setContent(list);
+		result.setInfo("查询电池状态成功");
+		logger.info(result.getInfo());
+		return result;
+	}
 
 }

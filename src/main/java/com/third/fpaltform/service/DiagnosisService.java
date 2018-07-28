@@ -3,6 +3,7 @@ package com.third.fpaltform.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -19,15 +20,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
-import com.third.fpaltform.entity.BatteryDiagnosis;
-import com.third.fpaltform.entity.DebugParamEntity;
 import com.third.fpaltform.entity.Diagnosis;
 import com.third.fpaltform.entity.DiagnosisLog;
-import com.third.fpaltform.entity.DriveDiagnosis;
-import com.third.fpaltform.entity.InstrumentDiagnosis;
 import com.third.fpaltform.entity.PartEntity;
 import com.third.fpaltform.entity.UnbindParan;
 import com.third.fpaltform.entity.VehicleEntity;
@@ -47,6 +45,9 @@ public class DiagnosisService
 	
 	@Resource
 	private PartRepository partRepository;
+	
+	@Resource
+	private JdbcTemplate jdbcTemplate;
 	
 	/**
 	 * 上报检测数据
@@ -308,6 +309,41 @@ public class DiagnosisService
 		part.setStatus(1);//禁用
 		
 		partRepository.save(part);
+	}
+
+
+	/**
+	 * 查询电池状态
+	 * @param eId
+	 * @param lic
+	 */
+	public List<Map<String, Object>> queryBatteryState(String eId, String lic) 
+	{
+		StringBuffer StringBuffer = new StringBuffer();
+		StringBuffer.append("SELECT b.EID as eid,b.ISO as iso, b.PRECHG as prechg,b.POSRLY as posrly,"
+				+ " b.NEGRLY as engrly, b.PRECHGRLY as prechgrly, b.CHGRRLY as chgrrly, b.LTEMP as ltemp,"
+				+ " b.HTEMP as htemp, b.DELTATEMP as deltatemp, b.OVRCHG as ovrchg, b.OVRDISCHARGE as ovrdischarge, "
+				+ " b.CELLHVOLT as cellhvolt, b.CELLLVOLT as celllvolt, b.CELLDELTAVOLT as celldeltavolt, b.PACKHVOLT as packhvolt,"
+				+ " b.PACKLVOLT as packlvolt, b.LSOC as lsoc, b.HSOC as hsoc,b.BATT as batt, b.SLAVECAN as slavecan, "
+				+ " b.VCUCAN as vcucan, b.CHGRCAN as chgrcan, b.COOLSYS as coolsys, b.HEATSYS as heatsys, "
+				+ " b.CELLVOLTSENSOR as cellvoltsensor, b.CURRSENSOR as currsensor, b.TEMPSENSOR as tempsensor, "
+				+ " b.PACKVOLTSENSOR as packvoltsensor, b.MOISSENSOR as moissensor,b.CHGRSENOR as chgrsenor,"
+				+ " b.DCSWITCH as dcswitch,b.PACKSWITCH as packswitch,b.NEWTIME as newtime, b.LIC as lic from BATTERY_STATE as b where 1=1 ");
+		
+		if(eId != null && !"".equals(eId))
+		{
+			StringBuffer.append(" and b.EID = '").append(eId).append("'");
+		}
+		
+		if(lic != null && !"".equals(lic))
+		{
+			StringBuffer.append(" and b.LIC = '").append(lic).append("'");
+		}
+		
+		List<Map<String, Object>> list = jdbcTemplate.queryForList(StringBuffer.toString()); 
+		
+		return list;
+		
 	}
 	
 }
